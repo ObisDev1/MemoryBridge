@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Orbitron', monospace;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-game-bg via-purple-900 to-blue-900 text-white min-h-screen;
+    background-size: 300% 300%;
+    animation: gradient 6s ease infinite;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-neon-purple to-neon-blue hover:from-neon-blue hover:to-neon-purple text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .card {
+    @apply bg-gradient-to-br from-game-card to-game-accent rounded-3xl shadow-2xl border border-purple-500/30 p-8 backdrop-blur-sm;
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.2), inset 0 0 30px rgba(255, 255, 255, 0.1);
+  }
+  
+  .game-button {
+    @apply bg-gradient-to-r from-neon-purple to-neon-blue text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-110 hover:rotate-2 cursor-pointer;
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  .neon-text {
+    text-shadow: 0 0 10px #8B5CF6, 0 0 20px #8B5CF6, 0 0 30px #8B5CF6;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+  
+  .border-glow {
+    box-shadow: 0 0 15px currentColor;
+  }
+}
