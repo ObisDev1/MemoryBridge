@@ -45,7 +45,8 @@ export function ProfilePage() {
         .from('avatars')
         .getPublicUrl(fileName)
 
-      await updateProfile.mutateAsync({ avatar_url: data.publicUrl })
+      console.log('Avatar uploaded:', data.publicUrl)
+      await updateProfile.mutateAsync({ display_name: profile?.display_name || '', username: profile?.username || '' })
     } catch (error) {
       console.error('Error uploading avatar:', error)
     } finally {

@@ -156,7 +156,8 @@ export function SpatialNavigationGame() {
             difficulty_level: level,
             score,
             duration: Math.floor((Date.now() - startTime) / 1000),
-            success_rate: successRate
+            success_rate: successRate,
+            performance_data: { correctPath: path, userPath, obstacles }
           })
         }
         endGame()

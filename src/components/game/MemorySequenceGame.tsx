@@ -22,7 +22,7 @@ export function MemorySequenceGame() {
   const [showingSequence, setShowingSequence] = useState(false)
   const [gamePhase, setGamePhase] = useState<'ready' | 'showing' | 'input' | 'result'>('ready')
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(0)
+
   const [timeFrozen, setTimeFrozen] = useState(false)
   const [hasShield, setHasShield] = useState(false)
   const [doubleScoreActive, setDoubleScoreActive] = useState(false)
@@ -32,7 +32,7 @@ export function MemorySequenceGame() {
   const createGameSession = useCreateGameSession()
   const { updateScore: updateProfileScore } = useProfile()
   const { awardGems, calculateGameReward } = useGemRewards()
-  const { hasPowerup, consumePowerup } = usePowerups()
+  const { consumePowerup } = usePowerups()
   const [startTime] = useState(Date.now())
 
   const generateSequence = () => {
@@ -112,7 +112,8 @@ export function MemorySequenceGame() {
             difficulty_level: level,
             score,
             duration: Math.floor((Date.now() - startTime) / 1000),
-            success_rate: successRate
+            success_rate: successRate,
+            performance_data: { correctSequence: sequence, userSequence }
           })
           
           // Award gems
@@ -124,7 +125,7 @@ export function MemorySequenceGame() {
     }
   }
 
-  const isColorActive = (colorName: string, index: number) => {
+  const isColorActive = (colorName: string) => {
     if (showingSequence) {
       return sequence[currentIndex] === colorName
     }
@@ -222,14 +223,14 @@ export function MemorySequenceGame() {
               disabled={gamePhase !== 'input'}
               className={`
                 w-28 h-28 rounded-3xl border-4 transition-all duration-300 transform relative overflow-hidden
-                ${isColorActive(color.name, index) ? 'scale-125 animate-glow border-white' : 'border-gray-700/50'}
+                ${isColorActive(color.name) ? 'scale-125 animate-glow border-white' : 'border-gray-700/50'}
                 ${gamePhase === 'input' ? 'hover:scale-110 cursor-pointer hover:border-white active:scale-95' : 'cursor-not-allowed'}
                 ${gamePhase === 'input' ? 'animate-float' : ''}
                 shadow-2xl
               `}
               style={{
                 background: color.bg,
-                boxShadow: isColorActive(color.name, index) 
+                boxShadow: isColorActive(color.name) 
                   ? `0 0 40px ${color.shadow}, 0 0 80px ${color.shadow}, inset 0 0 20px rgba(255,255,255,0.2)` 
                   : `0 10px 30px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.1)`,
                 opacity: gamePhase === 'input' ? 1 : 0.6,

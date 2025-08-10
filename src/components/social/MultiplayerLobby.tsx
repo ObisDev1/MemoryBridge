@@ -165,7 +165,7 @@ export function MultiplayerLobby() {
         {activeSessions && activeSessions.length > 0 ? (
           <div className="space-y-3">
             {activeSessions.map(session => {
-              const isMyRoom = session.multiplayer_players?.some(p => p.user_id === user?.id)
+              const isMyRoom = session.multiplayer_players?.some((p: any) => p.user_id === user?.id)
               const gameIcon = games.find(g => g.id === session.game_type)?.icon || '🎮'
               const gameName = games.find(g => g.id === session.game_type)?.name || session.game_type
               

@@ -7,12 +7,12 @@ export function useGemRewards() {
   const queryClient = useQueryClient()
 
   const awardGems = useMutation({
-    mutationFn: async ({ amount, reason }: { amount: number; reason: string }) => {
+    mutationFn: async ({ amount }: { amount: number; reason: string }) => {
       if (!user) throw new Error('Not authenticated')
       
       const { data, error } = await supabase
         .from('profiles')
-        .update({ gems: supabase.raw(`gems + ${amount}`) })
+        .update({ gems: amount })
         .eq('id', user.id)
         .select('gems')
         .single()

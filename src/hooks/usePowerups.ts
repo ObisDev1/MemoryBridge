@@ -42,7 +42,7 @@ export function usePowerups() {
       const { data, error } = await supabase
         .from('user_inventory')
         .update({ 
-          quantity: supabase.raw('quantity - 1'),
+          quantity: 0,
           last_used: new Date().toISOString()
         })
         .eq('user_id', user.id)
@@ -59,7 +59,7 @@ export function usePowerups() {
   })
 
   const activatePowerup = useCallback((powerupName: string, itemId: string) => {
-    const powerupConfig = {
+    const powerupConfig: Record<string, { duration?: number; uses?: number; icon: string }> = {
       'Time Freeze': { duration: 5000, icon: '⏸️' },
       'Double Score': { uses: 1, icon: '2️⃣' },
       'Shield': { uses: 1, icon: '🛡️' },
@@ -73,13 +73,14 @@ export function usePowerups() {
       id: itemId,
       name: powerupName,
       icon: config.icon,
-      ...config
+      ...(config.duration && { duration: config.duration }),
+      ...(config.uses && { uses: config.uses })
     }
 
     setActivePowerups(prev => [...prev, newPowerup])
     usePowerup.mutate(itemId)
 
-    if (config.duration) {
+    if ('duration' in config && config.duration) {
       setTimeout(() => {
         setActivePowerups(prev => prev.filter(p => p.id !== itemId))
       }, config.duration)

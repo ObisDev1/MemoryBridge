@@ -65,7 +65,7 @@ const GAMES = [
 ]
 
 export function GameDashboard() {
-  const { user, signOut } = useAuth()
+  const { signOut } = useAuth()
   const { profile } = useProfile()
   const { startGame, currentGame, isPlaying } = useGameStore()
   const [showProfile, setShowProfile] = useState(false)

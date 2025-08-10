@@ -45,7 +45,7 @@ export function useCognitiveStats() {
     return { level: 'Beginner', color: 'text-gray-400', description: 'Starting journey' }
   }
 
-  const getStatImprovement = (statName: string) => {
+  const getStatImprovement = () => {
     // This would track improvement over time - simplified for now
     return Math.floor(Math.random() * 10) // Placeholder
   }

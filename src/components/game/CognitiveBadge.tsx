@@ -2,16 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../hooks/useAuth'
 
-interface CognitiveLevel {
-  level: number
-  name: string
-  description: string
-  icon: string
-  min_memory_strength: number
-  min_focus_duration: number
-  min_distraction_resistance: number
-  min_context_switching_speed: number
-}
+
 
 export function CognitiveBadge() {
   const { user } = useAuth()

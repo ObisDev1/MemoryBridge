@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useGameStore } from '../../stores/gameStore'
 import { useAuth } from '../../hooks/useAuth'
 import { useCreateGameSession } from '../../hooks/useGameSessions'
