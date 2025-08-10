@@ -12,24 +12,13 @@ export default defineConfig({
         name: 'MemoryBridge',
         short_name: 'MemoryBridge',
         description: 'Gamified prospective memory training platform',
-        theme_color: '#3b82f6',
-        background_color: '#ffffff',
+        theme_color: '#8b5cf6',
+        background_color: '#000000',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
         start_url: '/',
-        icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
+        icons: []
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
