@@ -5,12 +5,14 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://yatljmlakpguaw
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhdGxqbWxha3BndWF3dHV3aGhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3ODU2NDgsImV4cCI6MjA3MDM2MTY0OH0.MRvjGwKrB8_VGIJJL85d9_6Zmcpgbj725u60v4hDyQc'
 
 // Debug logging for Vercel
-console.log('Environment check:', {
-  hasUrl: !!import.meta.env.VITE_SUPABASE_URL,
-  hasKey: !!import.meta.env.VITE_SUPABASE_ANON_KEY,
-  url: supabaseUrl?.substring(0, 30) + '...',
-  mode: import.meta.env.MODE
-})
+console.log('=== ENVIRONMENT DEBUG ===');
+console.log('All env vars:', import.meta.env);
+console.log('VITE_SUPABASE_URL:', import.meta.env.VITE_SUPABASE_URL);
+console.log('VITE_SUPABASE_ANON_KEY:', import.meta.env.VITE_SUPABASE_ANON_KEY ? 'EXISTS' : 'MISSING');
+console.log('Final URL:', supabaseUrl);
+console.log('Final Key exists:', !!supabaseAnonKey);
+console.log('Mode:', import.meta.env.MODE);
+console.log('========================');
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
 
