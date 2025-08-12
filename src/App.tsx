@@ -2,7 +2,10 @@ import { useAuth } from './hooks/useAuth'
 import { AuthForm } from './components/auth/AuthForm'
 import { GameDashboard } from './components/game/GameDashboard'
 import { LoadingSpinner } from './components/ui/LoadingSpinner'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense, lazy } from 'react'
+
+// Lazy load heavy components
+const LazyGameDashboard = lazy(() => import('./components/game/GameDashboard').then(module => ({ default: module.GameDashboard })))
 
 function App() {
   const { user, loading, error: authError } = useAuth()
@@ -48,7 +51,13 @@ function App() {
   }
 
   try {
-    return user ? <GameDashboard /> : <AuthForm />
+    return user ? (
+      <Suspense fallback={<LoadingSpinner />}>
+        <LazyGameDashboard />
+      </Suspense>
+    ) : (
+      <AuthForm />
+    )
   } catch (err) {
     console.error('Render Error:', err)
     return (

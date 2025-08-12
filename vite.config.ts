@@ -7,15 +7,24 @@ export default defineConfig({
     global: 'globalThis',
   },
   build: {
+    target: 'es2015',
+    minify: 'terser',
     rollupOptions: {
       output: {
-        entryFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
-        chunkFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
-        assetFileNames: `assets/[name]-[hash]-${Date.now()}.[ext]`
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          supabase: ['@supabase/supabase-js'],
+          ui: ['framer-motion', '@tanstack/react-query']
+        }
       }
     },
   },
   optimizeDeps: {
-    include: ['@supabase/supabase-js'],
+    include: ['@supabase/supabase-js', 'react', 'react-dom'],
   },
+  server: {
+    hmr: {
+      overlay: false
+    }
+  }
 })

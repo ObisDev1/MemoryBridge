@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 
@@ -7,29 +7,47 @@ export function useAuth() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const updateUser = useCallback((session: any) => {
+    setUser(session?.user ?? null)
+    setLoading(false)
+    setError(null)
+  }, [])
+
   useEffect(() => {
-    try {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setUser(session?.user ?? null)
-        setLoading(false)
-      }).catch((err) => {
-        console.error('Auth error:', err)
-        setError('Authentication failed')
-        setLoading(false)
-      })
-    } catch (err) {
-      console.error('Supabase init error:', err)
-      setError('Failed to initialize authentication')
-      setLoading(false)
+    let mounted = true
+
+    const initAuth = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        if (mounted) {
+          if (error) {
+            setError(error.message)
+            setLoading(false)
+          } else {
+            updateUser(session)
+          }
+        }
+      } catch (err: any) {
+        if (mounted) {
+          setError(err.message || 'Authentication failed')
+          setLoading(false)
+        }
+      }
     }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null)
-      setLoading(false)
+    initAuth()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (mounted) {
+        updateUser(session)
+      }
     })
 
-    return () => subscription.unsubscribe()
-  }, [])
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
+  }, [updateUser])
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
