@@ -8,32 +8,22 @@ export function useAuth() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    console.log('useAuth: Starting auth check');
-    
-    if (!supabase) {
-      console.error('useAuth: Supabase client not available');
-      setError('Supabase client not initialized');
-      setLoading(false);
-      return;
+    try {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setUser(session?.user ?? null)
+        setLoading(false)
+      }).catch((err) => {
+        console.error('Auth error:', err)
+        setError('Authentication failed')
+        setLoading(false)
+      })
+    } catch (err) {
+      console.error('Supabase init error:', err)
+      setError('Failed to initialize authentication')
+      setLoading(false)
     }
 
-    supabase.auth.getSession().then(({ data: { session }, error }: any) => {
-      console.log('useAuth: Session result:', { session: !!session, error });
-      if (error) {
-        console.error('useAuth: Session error:', error);
-        setError(error.message);
-      }
-      setUser(session?.user ?? null)
-      setLoading(false)
-    }).catch((err: any) => {
-      console.error('useAuth: Session catch:', err);
-      setError(err.message);
-      setLoading(false);
-    })
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
       setUser(session?.user ?? null)
       setLoading(false)
     })
