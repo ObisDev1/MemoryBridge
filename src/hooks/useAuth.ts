@@ -17,7 +17,7 @@ export function useAuth() {
       return;
     }
 
-    supabase.auth.getSession().then(({ data: { session }, error }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }: any) => {
       console.log('useAuth: Session result:', { session: !!session, error });
       if (error) {
         console.error('useAuth: Session error:', error);
@@ -25,7 +25,7 @@ export function useAuth() {
       }
       setUser(session?.user ?? null)
       setLoading(false)
-    }).catch((err) => {
+    }).catch((err: any) => {
       console.error('useAuth: Session catch:', err);
       setError(err.message);
       setLoading(false);
@@ -33,7 +33,7 @@ export function useAuth() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
       setUser(session?.user ?? null)
       setLoading(false)
     })
