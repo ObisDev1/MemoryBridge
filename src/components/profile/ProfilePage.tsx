@@ -4,6 +4,7 @@ import { useProfile } from '../../hooks/useProfile'
 import { supabase } from '../../lib/supabase'
 import { PremiumStatus } from '../premium/PremiumStatus'
 import { SubscriptionManager } from '../premium/SubscriptionManager'
+import { COUNTRIES } from '../../data/countries'
 
 export function ProfilePage() {
   const { user } = useAuth()
@@ -54,11 +55,7 @@ export function ProfilePage() {
     }
   }
 
-  const countries = [
-    'United States', 'United Kingdom', 'Canada', 'Australia', 'Germany', 
-    'France', 'Japan', 'South Korea', 'Brazil', 'India', 'China', 'Russia',
-    'Mexico', 'Spain', 'Italy', 'Netherlands', 'Sweden', 'Norway', 'Other'
-  ]
+
 
   return (
     <div className="min-h-screen p-4 relative overflow-hidden">
@@ -136,7 +133,7 @@ export function ProfilePage() {
                       className="w-full px-4 py-3 bg-black/50 border-2 border-purple-500/50 rounded-2xl text-white"
                     >
                       <option value="">Select Country</option>
-                      {countries.map(country => (
+                      {COUNTRIES.map(country => (
                         <option key={country} value={country}>{country}</option>
                       ))}
                     </select>
