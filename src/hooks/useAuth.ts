@@ -5,11 +5,30 @@ import { supabase } from '../lib/supabase'
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    console.log('useAuth: Starting auth check');
+    
+    if (!supabase) {
+      console.error('useAuth: Supabase client not available');
+      setError('Supabase client not initialized');
+      setLoading(false);
+      return;
+    }
+
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      console.log('useAuth: Session result:', { session: !!session, error });
+      if (error) {
+        console.error('useAuth: Session error:', error);
+        setError(error.message);
+      }
       setUser(session?.user ?? null)
       setLoading(false)
+    }).catch((err) => {
+      console.error('useAuth: Session catch:', err);
+      setError(err.message);
+      setLoading(false);
     })
 
     const {
@@ -53,5 +72,5 @@ export function useAuth() {
     return { error }
   }
 
-  return { user, loading, signIn, signUp, signOut, signInWithGoogle }
+  return { user, loading, error, signIn, signUp, signOut, signInWithGoogle }
 }

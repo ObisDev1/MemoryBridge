@@ -5,8 +5,15 @@ import { LoadingSpinner } from './components/ui/LoadingSpinner'
 import { useState, useEffect } from 'react'
 
 function App() {
-  const { user, loading } = useAuth()
+  const { user, loading, error: authError } = useAuth()
   const [error, setError] = useState<string | null>(null)
+
+  // Show auth errors
+  useEffect(() => {
+    if (authError) {
+      setError(`Auth Error: ${authError}`);
+    }
+  }, [authError])
 
   useEffect(() => {
     // Add error handling for production
